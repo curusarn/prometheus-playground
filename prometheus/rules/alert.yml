@@ -1,0 +1,58 @@
+groups:
+- name: example
+  rules:
+  - alert: ServiceMonitorDown
+    expr: up{job="service_monitor"} == 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Service monitor is down"
+      description: "Service monitor has been down for more than 1 minute."
+      
+  - alert: HighErrorRate
+    expr: service_monitor_error_rate > 0.05
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: "High error rate detected"
+      description: "Service monitor error rate is above 5% for more than 2 minutes."
+      
+  - alert: HighRequestLatency
+    expr: histogram_quantile(0.95, rate(service_monitor_request_duration_seconds_bucket[5m])) > 0.4
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: "High request latency detected"
+      description: "95th percentile of request latency is above 400ms for more than 2 minutes."
+      
+  - alert: HighLoad
+    expr: service_monitor_active_requests > 8
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: "High load detected"
+      description: "Service monitor is experiencing high load (>8 active requests) for more than 5 minutes."
+
+- name: service-status
+  rules:
+  - alert: ServiceDown
+    expr: service_monitor_up == 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Service {{ $labels.service }} is down"
+      description: "Service {{ $labels.service }} has been reported as down for more than 1 minute."
+      
+  - alert: MultipleServicesDown
+    expr: count(service_monitor_up == 0) > 1
+    for: 2m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Multiple services are down"
+      description: "{{ $value }} services are currently reported as down."

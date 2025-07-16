@@ -1,0 +1,15 @@
+# Service Monitor Configuration
+
+# Services that are currently up
+up_services = [
+  "api-gateway",
+  "auth-service",
+  "user-service",
+  "payment-service"
+]
+
+# Services that are currently down
+down_services = [
+  "notification-service",
+  "recommendation-engine"
+]
