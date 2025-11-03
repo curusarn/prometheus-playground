@@ -53,7 +53,7 @@ var (
 	)
 
 	// Configuration file path (default, can be overridden by environment variable)
-	configPath = "config.toml"
+	configPath = "/app/config/config.toml"
 
 	// Last modification time
 	lastModTime time.Time
@@ -158,11 +158,14 @@ func main() {
 	}
 
 	// Ensure config directory exists
-	configDir := configPath[:strings.LastIndex(configPath, "/")]
-	if _, err := os.Stat(configDir); os.IsNotExist(err) {
-		log.Printf("Config directory %s does not exist, creating it", configDir)
-		if err := os.MkdirAll(configDir, 0755); err != nil {
-			log.Printf("Error creating config directory: %v", err)
+	lastSlash := strings.LastIndex(configPath, "/")
+	if lastSlash > 0 {
+		configDir := configPath[:lastSlash]
+		if _, err := os.Stat(configDir); os.IsNotExist(err) {
+			log.Printf("Config directory %s does not exist, creating it", configDir)
+			if err := os.MkdirAll(configDir, 0755); err != nil {
+				log.Printf("Error creating config directory: %v", err)
+			}
 		}
 	}
 
