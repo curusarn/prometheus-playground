@@ -2,14 +2,14 @@
 
 # Services that are currently up
 up_services = [
+  "auth-service",
   "payment-service",
-  "user-service"
+  "recommendation-engine",
+  "notification-service"
 ]
 
 # Services that are currently down
 down_services = [
-  "notification-service",
-  "recommendation-engine",
-  "auth-service",
-  "api-gateway"
+  "api-gateway",
+  "user-service"
 ]
