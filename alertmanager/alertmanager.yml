@@ -8,27 +8,18 @@ route:
   repeat_interval: 1h
   receiver: 'webhook'
   routes:
-    - receiver: 'betteruptime'
-      continue: true
-    - receiver: 'incidentio'
+    - receiver: 'betterstack'
       continue: true
 
 receivers:
+  - name: betterstack
+    webhook_configs:
+      - url: 'https://uptime.betterstack.com/api/v1/prometheus/webhook/3xVqscKbTEGmeFU2sy69L7wz'
+        send_resolved: true
   - name: 'webhook'
     webhook_configs:
       - url: 'http://localhost:5001/'
         send_resolved: true
-  - name: betteruptime
-    webhook_configs:
-      - url: https://uptime.betterstack.com/api/v1/prometheus/webhook/yVGdCEA6AyyWJ16P2SZDXc3R
-        send_resolved: true
-  - name: 'incidentio'
-    webhook_configs:
-      - url: 'https://api.incident.io/v2/alert_events/alertmanager/01JWRHZ7C27XG77SJJH4Q3QKJ4'
-        send_resolved: true
-        http_config:
-          authorization:
-            credentials: '07f068061f9670ef9f3dfb7c38d6e322f6a18d731eab7e450877ab555f414cbf'
 
 inhibit_rules:
   - source_match:
